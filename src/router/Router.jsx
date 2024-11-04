@@ -8,6 +8,7 @@ import { CreateQuestion } from "../components/Create/Questoes/Question";
 import { Simulate } from "../components/Create/Simulate/Simulate"; 
 import Simulado from "../components/views/Simulado";
 import { ConsultaSimulado } from "../components/Create/Simulate/ConsultaSimulado";
+import { ResultadoSimulado } from "../components/Create/Simulate/resultado/resultado";
 
 export default function AppRouter() {
     return (
@@ -21,6 +22,7 @@ export default function AppRouter() {
                 <Route path="/simulate" element={<Simulate />} />
                 <Route path="/simul" element={<ConsultaSimulado />} />
                 <Route path="/simulado/:id" element={<Simulado />} />
+                <Route path="/classificao/:id" element={<ResultadoSimulado />} /> 
             </Routes>
         </Router>
     );

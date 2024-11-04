@@ -1,5 +1,7 @@
 import React from "react";
-import './ConsultaSimulado.css'; 
+import './ConsultaSimulado.css';
+import { Link } from "react-router-dom";
+
 import { HeaderPage } from "../../Header/Header";
 
 export class ConsultaSimulado extends React.Component {
@@ -63,7 +65,8 @@ export class ConsultaSimulado extends React.Component {
                                         </p>
                                         <a href={`https://cconcurseiro.up.railway.app/simulado/${simulado.id}`} className="btn btn-primary">Ver Simulado</a>
                                     </div>
-                                </div>
+                                    <a href={`/classificao/${simulado.id}`} className="btn btn-info text-white">Classificação</a>
+                                    </div>
                             </div>
                         ))}
                     </div>
