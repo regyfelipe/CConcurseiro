@@ -48,7 +48,9 @@ function App() {
     return (
         <div className="index-page">
             <AppRouter/>
-            <a className="scroll-top"><i className="bi bi-arrow-up"></i></a>
+            <button className="scroll-top" aria-label="Scroll to top">
+                <i className="bi bi-arrow-up"></i>
+            </button>
         </div>
     );
 }
