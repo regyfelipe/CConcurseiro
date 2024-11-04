@@ -21,8 +21,9 @@ export class CreateQuestion extends React.Component {
                 textoAux: "",
             },
             explicacao: "",
-            isTextExpanded: false,
         };
+
+
     }
 
     toggleTextExpansion = () => {
@@ -113,18 +114,22 @@ export class CreateQuestion extends React.Component {
     handleSubmit = async () => {
         const { viewData, alternatives, correctAnswer, explicacao } = this.state;
 
+        // Estrutura do questionData
         const questionData = {
-            banca: viewData.banca || "",
-            instituicao: viewData.instituicao || "",
-            prova: viewData.prova || "",
-            nivel: viewData.nivel || "",
-            disciplina: viewData.disciplina || "",
-            assunto: viewData.assunto || "",
-            pergunta: viewData.pergunta || "",
-            textoAux: viewData.textoAux || "",
-            alternativas: alternatives.map(alt => alt.value),
-            correctAnswer: correctAnswer || "",
-            explicacao: explicacao || "",
+            banca: viewData.banca || null,  
+            instituicao: viewData.instituicao || null,  
+            prova: viewData.prova || null,  
+            nivel: viewData.nivel || null,  
+            disciplina: viewData.disciplina || null,  
+            assunto: viewData.assunto || null,  
+            pergunta: viewData.pergunta || null,  
+            textoAux: viewData.textoAux || null,  
+            alternativas: alternatives.map(alt => ({
+                label: alt.label,
+                value: alt.value || ""  
+            })), // Formata as alternativas
+            respostaCorreta: correctAnswer || null,  
+            explicacao: explicacao || null,  
         };
 
         try {
@@ -139,6 +144,7 @@ export class CreateQuestion extends React.Component {
             const data = await response.json();
             if (response.ok) {
                 alert(data.message);
+                // Limpa o formulário após o sucesso
                 this.setState({
                     viewData: {
                         disciplina: "",
@@ -162,6 +168,7 @@ export class CreateQuestion extends React.Component {
             alert('Erro ao enviar questão');
         }
     };
+
 
     render() {
         const { viewData, showTextAux, showImageAux, alternatives, correctAnswer, explicacao } = this.state;
@@ -308,34 +315,34 @@ export class CreateQuestion extends React.Component {
                                             </div>
                                         </div>
                                         <div className="question-content">
-    <div className="d-flex align-items-center">
-    <span>Texto Auxiliar</span>
-        <button
-            className="btn btn-link"
-            onClick={this.toggleTextExpansion}
-            aria-expanded={this.state.isTextExpanded}
-            aria-controls="auxiliary-text"
-        >
-            {this.state.isTextExpanded ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-dash-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
-                </svg>
-            ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                </svg>
-            )}
-        </button>
-       
-    </div>
-    {this.state.isTextExpanded && (
-        <pre id="auxiliary-text">
-            <div dangerouslySetInnerHTML={{ __html: viewData.textoAux }} />
-        </pre>
-    )}
-</div>
+                                            <div className="d-flex align-items-center">
+                                                <span>Texto Auxiliar</span>
+                                                <button
+                                                    className="btn btn-link"
+                                                    onClick={this.toggleTextExpansion}
+                                                    aria-expanded={this.state.isTextExpanded}
+                                                    aria-controls="auxiliary-text"
+                                                >
+                                                    {this.state.isTextExpanded ? (
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-dash-circle" viewBox="0 0 16 16">
+                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                                                        </svg>
+                                                    ) : (
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
+                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                                        </svg>
+                                                    )}
+                                                </button>
+
+                                            </div>
+                                            {this.state.isTextExpanded && (
+                                                <pre id="auxiliary-text">
+                                                    <div dangerouslySetInnerHTML={{ __html: viewData.textoAux }} />
+                                                </pre>
+                                            )}
+                                        </div>
 
 
 

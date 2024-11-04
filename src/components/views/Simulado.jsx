@@ -10,9 +10,9 @@ const Simulado = () => {
     const [loading, setLoading] = useState(true);
     const [feedback, setFeedback] = useState({});
     const [showModal, setShowModal] = useState(false);
-    const [name, setName] = useState(''); 
-    const [isNameInputVisible, setIsNameInputVisible] = useState(false); 
-    const [submitted, setSubmitted] = useState(false); 
+    const [name, setName] = useState('');
+    const [isNameInputVisible, setIsNameInputVisible] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
 
     useEffect(() => {
         const fetchSimulado = async () => {
@@ -70,20 +70,46 @@ const Simulado = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
-        setName(''); 
-        setIsNameInputVisible(false); 
-        setSubmitted(false); 
+        setName('');
+        setIsNameInputVisible(false);
+        setSubmitted(false);
     };
 
     const handleConfirm = () => {
-        setIsNameInputVisible(true); 
+        setIsNameInputVisible(true);
     };
 
-    const handleFinalSubmit = () => {
+    const handleFinalSubmit = async () => {
         if (name.trim() !== '') {
             setSubmitted(true);
+            const formattedAnswers = questions.map(question => {
+                return `${question.id} ${feedback[question.id] || 'Nenhuma resposta selecionada'}`;
+            }).join(', ');
+
+            const submissionData = {
+                name,
+                answers: formattedAnswers,
+            };
+
+            try {
+                const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/saveAnswers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(submissionData),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao enviar respostas.');
+                }
+
+                alert(`Simulado enviado com sucesso, ${name}!`);
+            } catch (error) {
+                console.error('Erro ao enviar respostas:', error);
+            }
         } else {
-            alert('Por favor, insira seu nome.'); 
+            alert('Por favor, insira seu nome.');
         }
     };
 
@@ -113,8 +139,8 @@ const Simulado = () => {
                     </div>
 
                     {/* Question Content */}
-                    <div className="question-content mb-4">
-                        <p>{question.pergunta}</p>
+                    <div className="question-content mb-3">
+                        <div dangerouslySetInnerHTML={{ __html: question.pergunta }} />
                     </div>
 
                     {/* Answer Options */}
@@ -171,9 +197,8 @@ const Simulado = () => {
                                     ))}
                                 </div>
 
-
                                 <div className="containerSimulado">
-                                    { (
+                                    {isNameInputVisible && (
                                         <div className="mb-4">
                                             <label htmlFor="name" className="form-label">Digite seu nome:</label>
                                             <input
@@ -201,7 +226,6 @@ const Simulado = () => {
                                 <button type="button" className="btn btn-success" onClick={handleFinalSubmit}>
                                     Confirma
                                 </button>
-                                
                             </div>
                         </div>
                     </div>

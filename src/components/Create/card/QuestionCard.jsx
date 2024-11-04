@@ -7,9 +7,10 @@ export class QuestionCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            questions: [], 
+            questions: [],
             selectedAnswers: {},
-            feedback: {}, 
+            feedback: {},
+            expandedAuxiliaryText: {}, 
         };
     }
 
@@ -30,7 +31,6 @@ export class QuestionCard extends React.Component {
             this.setState({ feedback: { general: "Erro ao buscar questões." } });
         }
     };
-    
 
     handleAnswerSelect = (questionId, selectedAnswer) => {
         this.setState((prevState) => ({
@@ -43,16 +43,25 @@ export class QuestionCard extends React.Component {
 
     handleSubmitAnswer = (question) => {
         const selectedAnswer = this.state.selectedAnswers[question.id];
-        const correctAnswer = question.resposta_correta; 
+        const correctAnswer = question.resposta_correta;
 
-        // console.log(`Comparando: Selected Answer = ${selectedAnswer}, Correct Answer = ${correctAnswer}`);
+        console.log(`Comparando: Selected Answer = ${selectedAnswer}, Correct Answer = ${correctAnswer}`);
 
-        const isCorrect = selectedAnswer === correctAnswer; 
+        const isCorrect = selectedAnswer === correctAnswer;
 
         this.setState((prevState) => ({
             feedback: {
                 ...prevState.feedback,
                 [question.id]: isCorrect ? "Correto!" : "Incorreto.",
+            },
+        }));
+    };
+
+    toggleAuxiliaryText = (questionId) => {
+        this.setState((prevState) => ({
+            expandedAuxiliaryText: {
+                ...prevState.expandedAuxiliaryText,
+                [questionId]: !prevState.expandedAuxiliaryText[questionId],
             },
         }));
     };
@@ -75,15 +84,42 @@ export class QuestionCard extends React.Component {
                                             <small>{`Banca: ${question.banca} | Órgão: ${question.instituicao}`}</small>
                                         </div>
                                     </div>
-                                    
-                                    <div className="question-content">
-                                            <pre><div dangerouslySetInnerHTML={{ __html: question.texto_aux }} /> </pre>
-                                        </div>
 
-                                    {/* Question Content */}
-                                    <div className="question-content mb-4">
-                                        <p>{question.pergunta}</p>
+                                    {/* Auxiliary Text Toggle */}
+                                    <div className="question-content">
+                                        <div className="d-flex align-items-center">
+                                            <span>Texto Auxiliar</span>
+                                            <button
+                                                className="btn btn-link"
+                                                onClick={() => this.toggleAuxiliaryText(question.id)}
+                                                aria-expanded={this.state.expandedAuxiliaryText[question.id]}
+                                                aria-controls={`auxiliary-text-${question.id}`}
+                                            >
+                                                {this.state.expandedAuxiliaryText[question.id] ? (
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-dash-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                                                    </svg>
+                                                ) : (
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                                    </svg>
+                                                )}
+                                            </button>
+                                        </div>
+                                        {this.state.expandedAuxiliaryText[question.id] && (
+                                            <pre id={`auxiliary-text-${question.id}`}>
+                                                <div dangerouslySetInnerHTML={{ __html: question.texto_aux }} />
+                                            </pre>
+                                        )}
                                     </div>
+
+                                    
+
+                                    <div className="question-content mb-3">
+                                            <div dangerouslySetInnerHTML={{ __html: question.pergunta }} />
+                                        </div>
 
                                     {/* Answer Options */}
                                     <div className="answer-options list-group mb-4">

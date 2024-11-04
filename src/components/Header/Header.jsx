@@ -57,11 +57,11 @@ export const HeaderPage = () => {
                                 <ul className="d-flex lista">
                                     <li><Link to="/" className="active">Home</Link></li>
                                     <li><Link to="/simulate">Simulados</Link></li>
+                                    <li><Link to="/simul">Consulta simulados</Link></li>
                                     <li><Link to="/createQuestion">Criar Questao</Link></li>
                                     <li><Link to="/questionCard">Questoes</Link></li>
 
                                     
-                                    <li><Link to="#about">About</Link></li>
                                     <li><Link to="/login">entra</Link></li>
                                 </ul>
                             </nav>
@@ -71,9 +71,9 @@ export const HeaderPage = () => {
                             <ul className="d-flex lista">
                                 <li><Link to="/" className="active">Home</Link></li>
                                 <li><Link to="/simulate">Simulados</Link></li>
+                                <li><Link to="/simul">Consulta simulados</Link></li>
                                 <li><Link to="/createQuestion">Criar Questao</Link></li>
                                 <li><Link to="/questionCard">Questoes</Link></li>
-                                <li><Link to="#about">About</Link></li>
                                 <li><Link to="/login">entra</Link></li>
 
                             </ul>

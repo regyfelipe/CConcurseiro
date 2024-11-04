@@ -7,6 +7,7 @@ import { QuestionCard } from "../components/Create/card/QuestionCard";
 import { CreateQuestion } from "../components/Create/Questoes/Question";
 import { Simulate } from "../components/Create/Simulate/Simulate"; 
 import Simulado from "../components/views/Simulado";
+import { ConsultaSimulado } from "../components/Create/Simulate/ConsultaSimulado";
 
 export default function AppRouter() {
     return (
@@ -18,6 +19,7 @@ export default function AppRouter() {
                 <Route path="/questionCard" element={<QuestionCard />} />
                 <Route path="/createQuestion" element={<CreateQuestion />} />
                 <Route path="/simulate" element={<Simulate />} />
+                <Route path="/simul" element={<ConsultaSimulado />} />
                 <Route path="/simulado/:id" element={<Simulado />} />
             </Routes>
         </Router>
