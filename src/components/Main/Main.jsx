@@ -2,6 +2,7 @@ import React from "react";
 import { HeaderPage } from "../Header/Header";
 import heroImag from '../../assets/imgs/hero-img.png';
 import heroBg from '../../assets/imgs/hero-bg-2.jpg';
+import { Link } from 'react-router-dom';
 
 
 
@@ -22,8 +23,8 @@ export class MainContainer extends React.Component {
                                 <h1><span>Concurseiro</span></h1>
                                 <p>site sem fins lucrativos</p>
                                 <div className="d-flex">
-                                    <a href="#about" className="btn-get-started">Get Started</a>
-                                    <a href="https://www.instagram.com/fep.ink/" className="glightbox btn-watch-video d-flex align-items-center"><i className="bi bi-instagram" /><span>Desenvolverdor</span></a>
+                                    <Link to="#about" className="btn-get-started">Get Started</Link>
+                                    <Link to="https://www.instagram.com/fep.ink/" className="glightbox btn-watch-video d-flex align-items-center"><i className="bi bi-instagram" /><span>Desenvolverdor</span></Link>
                                 </div>
                             </div>
                         </div>
@@ -53,7 +54,7 @@ export class MainContainer extends React.Component {
                                 <h3>About Us</h3>
                                 <h2>Ducimus rerum libero reprehenderit cumque</h2>
                                 <p>Ipsa sint sit. Quis ducimus tempore dolores impedit et dolor cumque alias maxime. Enim reiciendis minus et rerum hic non. Dicta quas cum quia maiores iure. Quidem nulla qui assumenda incidunt voluptatem tempora deleniti soluta.</p>
-                                <a href="#" className="read-more"><span>Read More</span><i className="bi bi-arrow-right" /></a>
+                                <Link to="#" className="read-more"><span>Read More</span><i className="bi bi-arrow-right" /></Link>
                             </div>
                             <div className="col-xl-7">
                                 <div className="row gy-4 icon-boxes">

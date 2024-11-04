@@ -40,9 +40,10 @@ export const HeaderPage = () => {
         <>
             <header id="header" className="header d-flex align-items-center fixed-top">
                 <div className="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-                    <a href="/" className="d-flex align-items-center">
+                    <Link to="/" className="d-flex align-items-center">
+                    
                         <img src={logo} alt="logo" className="logo" />
-                    </a>
+                    </Link>
 
                     {isMobile ? (
                         <>

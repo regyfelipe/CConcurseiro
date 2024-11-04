@@ -138,7 +138,6 @@ export class Simulate extends React.Component {
                     examName: ""              
                 });
             } else {
-                // Tratar erros do backend
                 console.error(data.error);
                 alert("Erro ao gerar o simulado: " + data.error);
             }
