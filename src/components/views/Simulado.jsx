@@ -13,6 +13,7 @@ const Simulado = () => {
     const [name, setName] = useState('');
     const [isNameInputVisible, setIsNameInputVisible] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [notification, setNotification] = useState(''); 
 
     useEffect(() => {
         const fetchSimulado = async () => {
@@ -75,6 +76,7 @@ const Simulado = () => {
         setName('');
         setIsNameInputVisible(false);
         setSubmitted(false);
+        setNotification(''); 
     };
 
     const handleConfirm = () => {
@@ -85,15 +87,19 @@ const Simulado = () => {
     const handleFinalSubmit = async () => {
         if (name.trim() !== '') {
             setSubmitted(true);
-            const formattedAnswers = questions.map(question => {
-                return `${question.id} ${feedback[question.id] || 'Nenhuma resposta selecionada'}`;
-            }).join(', ');
-
+            const formattedResponses = questions.map(question => {
+                return {
+                    questionId: question.id,
+                    givenAnswer: feedback[question.id] || 'Nenhuma resposta selecionada', 
+                    correctAnswer: question.resposta_correta 
+                };
+            });
+    
             const submissionData = {
                 name,
-                answers: formattedAnswers,
+                responses: formattedResponses,
             };
-
+    
             try {
                 const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/saveAnswers', {
                     method: 'POST',
@@ -102,19 +108,22 @@ const Simulado = () => {
                     },
                     body: JSON.stringify(submissionData),
                 });
-
+    
                 if (!response.ok) {
                     throw new Error('Erro ao enviar respostas.');
                 }
-
-                alert(`Simulado enviado com sucesso, ${name}!`);
+    
+                setNotification(`Simulado enviado com sucesso, ${name}!`);
+                setShowModal(false);
             } catch (error) {
                 console.error('Erro ao enviar respostas:', error);
+                setNotification('Erro ao enviar respostas.'); 
             }
         } else {
             alert('Por favor, insira seu nome.');
         }
     };
+    
 
     if (loading) {
         return <p>Carregando...</p>;
@@ -201,19 +210,19 @@ const Simulado = () => {
                                 </div>
 
                                 <div className="containerSimulado">
-                                {isNameInputVisible && (
-    <div className="mb-4">
-        <label htmlFor="name" className="form-label">Digite seu nome:</label>
-        <input
-            type="text"
-            className="form-control premium-input"
-            id="name"
-            placeholder='Nome Completo'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-        />
-    </div>
-)}
+                                    {isNameInputVisible && (
+                                        <div className="mb-4">
+                                            <label htmlFor="name" className="form-label">Digite seu nome:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control premium-input"
+                                                id="name"
+                                                placeholder='Nome Completo'
+                                                value={name}
+                                                onChange={(e) => setName(e.target.value)}
+                                            />
+                                        </div>
+                                    )}
 
                                     {submitted && (
                                         <div className="confirmation-message">
@@ -233,6 +242,13 @@ const Simulado = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Notificação Personalizada */}
+            {notification && (
+                <div className="alert alert-success" role="alert">
+                    {notification}
                 </div>
             )}
         </div>
