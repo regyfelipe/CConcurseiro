@@ -10,15 +10,15 @@ const Simulado = () => {
     const [loading, setLoading] = useState(true);
     const [feedback, setFeedback] = useState({});
     const [showModal, setShowModal] = useState(false);
-    const [name, setName] = useState(''); // State for the name input
-    const [isNameInputVisible, setIsNameInputVisible] = useState(false); // Control visibility of name input
-    const [submitted, setSubmitted] = useState(false); // State to handle submission
+    const [name, setName] = useState(''); 
+    const [isNameInputVisible, setIsNameInputVisible] = useState(false); 
+    const [submitted, setSubmitted] = useState(false); 
 
     useEffect(() => {
         const fetchSimulado = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:3000/api/simulado/${id}`);
+                const response = await fetch(`https://backendcconcurseiro-production.up.railway.app/api/simulado/${id}`);
                 if (!response.ok) {
                     throw new Error('Erro ao buscar simulado.');
                 }
@@ -27,7 +27,7 @@ const Simulado = () => {
                 const questionsData = await Promise.all(
                     data.questions.map(async (questionId) => {
                         try {
-                            const questionResponse = await fetch(`http://localhost:3000/api/questions/${questionId}`);
+                            const questionResponse = await fetch(`https://backendcconcurseiro-production.up.railway.app/api/questions/${questionId}`);
                             if (!questionResponse.ok) {
                                 throw new Error('Erro ao buscar questão.');
                             }
@@ -70,21 +70,20 @@ const Simulado = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
-        setName(''); // Reset name field when modal is closed
-        setIsNameInputVisible(false); // Hide name input when closing modal
-        setSubmitted(false); // Reset submission state
+        setName(''); 
+        setIsNameInputVisible(false); 
+        setSubmitted(false); 
     };
 
     const handleConfirm = () => {
-        setIsNameInputVisible(true); // Show the name input field
+        setIsNameInputVisible(true); 
     };
 
     const handleFinalSubmit = () => {
         if (name.trim() !== '') {
-            // Here you could implement the submission logic
             setSubmitted(true);
         } else {
-            alert('Por favor, insira seu nome.'); // Alert if name is not entered
+            alert('Por favor, insira seu nome.'); 
         }
     };
 

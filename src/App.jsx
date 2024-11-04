@@ -43,7 +43,7 @@ function App() {
         return () => {
             window.removeEventListener('scroll', toggleScrollTop); // Limpa o listener ao desmontar
         };
-    }, []); // O array vazio garante que isso seja executado apenas uma vez
+    }, []); 
 
     return (
         <div className="index-page">

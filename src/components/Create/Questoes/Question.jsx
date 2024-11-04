@@ -117,7 +117,7 @@ export class CreateQuestion extends React.Component {
         };
     
         try {
-            const response = await fetch('http://192.168.18.11:3000/api/create', {
+            const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ export class CreateQuestion extends React.Component {
     
             const data = await response.json();
             if (response.ok) {
-                alert(data.message); // Mensagem de sucesso
+                alert(data.message);
                 this.setState({
                     viewData: {
                         disciplina: "",
@@ -144,7 +144,7 @@ export class CreateQuestion extends React.Component {
                     explicacao: "",
                 });
             } else {
-                alert(data.error); // Mensagem de erro
+                alert(data.error);
             }
         } catch (error) {
             console.error('Erro ao enviar questão:', error);
@@ -288,7 +288,7 @@ export class CreateQuestion extends React.Component {
                                     </button>
                                 </div>
 
-                                <div className="col-lg-6 col-md-6 col-12 mb-4">
+                                <div className="col-lg-6 col-md-6 col-12 mb-4 view">
                                     <div className="view-section card">
                                         <div class="question-header">
                                             <span className="ms-2">{`${viewData.disciplina} » ${viewData.assunto}`}</span>

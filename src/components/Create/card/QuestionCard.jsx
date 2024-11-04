@@ -19,14 +19,18 @@ export class QuestionCard extends React.Component {
 
     fetchQuestions = async () => {
         try {
-            const response = await fetch('http://192.168.18.11:3000/api/all');
+            const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/all');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const questions = await response.json();
-            // console.log("Questões recebidas:", questions); 
             this.setState({ questions });
         } catch (error) {
             console.error("Erro ao buscar questões:", error);
+            this.setState({ feedback: { general: "Erro ao buscar questões." } });
         }
     };
+    
 
     handleAnswerSelect = (questionId, selectedAnswer) => {
         this.setState((prevState) => ({

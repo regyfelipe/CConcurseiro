@@ -12,10 +12,10 @@ export class Simulate extends React.Component {
             answers: {},
             expandedQuestions: {},
             searchQuery: "",
-            fullName: "",        // Novo estado para o nome completo
-            examName: "",        // Novo estado para o nome da prova
-            generatedLink: "",    // Novo estado para o link gerado
-            showModal: false      // Estado para controlar a exibição do modal
+            fullName: "",        
+            examName: "",        
+            generatedLink: "",    
+            showModal: false      
         };
     }
 
@@ -25,7 +25,7 @@ export class Simulate extends React.Component {
 
     fetchQuestions = async () => {
         try {
-            const response = await fetch('http://192.168.18.11:3000/api/all');
+            const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/all');
             const questions = await response.json();
             this.setState({ questions });
         } catch (error) {
@@ -120,7 +120,7 @@ export class Simulate extends React.Component {
         const simuladoData = { fullName, examName, questions: questionIds };
 
         try {
-            const response = await fetch('http://192.168.18.11:3000/api/simulado', {
+            const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/api/simulado', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -132,10 +132,10 @@ export class Simulate extends React.Component {
 
             if (response.ok) {
                 this.setState({
-                    generatedLink: data.link, // Recebe o link gerado
-                    showModal: false,         // Fecha o modal
-                    fullName: "",             // Reseta o nome completo
-                    examName: ""              // Reseta o nome da prova
+                    generatedLink: data.link, 
+                    showModal: false,         
+                    fullName: "",             
+                    examName: ""              
                 });
             } else {
                 // Tratar erros do backend

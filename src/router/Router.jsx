@@ -5,8 +5,8 @@ import { LoginPage } from "../components/auth/Login/LoginPage";
 import { MainContainer } from "../components/Main/Main";
 import { QuestionCard } from "../components/Create/card/QuestionCard";
 import { CreateQuestion } from "../components/Create/Questoes/Question";
-import { Simulate } from "../components/Create/Simulate/Simulate"; // Verifique o caminho correto para o seu componente Simulado
-import Simulado from "../components/views/Simulado"; // Importe o componente Simulado
+import { Simulate } from "../components/Create/Simulate/Simulate"; 
+import Simulado from "../components/views/Simulado";
 
 export default function AppRouter() {
     return (
