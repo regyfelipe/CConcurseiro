@@ -115,37 +115,41 @@ export class Simulate extends React.Component {
 
     handleConfirmSimulado = async () => {
         const { fullName, examName, selectedQuestions } = this.state;
-
+    
         const questionIds = selectedQuestions.map(q => q.id);
         const simuladoData = { fullName, examName, questions: questionIds };
-
+    
         try {
-            const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/api/simulado', {
+            console.log("Sending simulado data:", simuladoData); // Log the data being sent
+            const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/simulado', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(simuladoData),
             });
-
+    
             const data = await response.json();
-
+            console.log("Response received:", data); // Log the response data
+    
             if (response.ok) {
                 this.setState({
-                    generatedLink: data.link, 
-                    showModal: false,         
-                    fullName: "",             
-                    examName: ""              
+                    generatedLink: data.link, // Recebe o link gerado
+                    showModal: false,         // Fecha o modal
+                    fullName: "",             // Reseta o nome completo
+                    examName: ""              // Reseta o nome da prova
                 });
             } else {
-                console.error(data.error);
+                // Tratar erros do backend
+                console.error("Backend error:", data.error); // Log the backend error
                 alert("Erro ao gerar o simulado: " + data.error);
             }
         } catch (error) {
-            console.error("Erro ao enviar dados do simulado:", error);
+            console.error("Error sending simulado data:", error); // Log the error caught in the catch block
             alert("Erro ao gerar o simulado. Tente novamente.");
-        };
+        }
     };
+    
 
     handleInputChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });

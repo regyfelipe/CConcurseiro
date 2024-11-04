@@ -59,37 +59,42 @@ export class CreateQuestion extends React.Component {
     removeAlternative = (index) => {
         this.setState(prevState => {
             const updatedAlternatives = prevState.alternatives.filter((_, i) => i !== index);
-
             const relabeledAlternatives = updatedAlternatives.map((alt, i) => ({
                 ...alt,
                 label: String.fromCharCode(65 + i),
             }));
-
             return { alternatives: relabeledAlternatives };
         });
     }
+
     applyFormatting = (format) => {
-        const textarea = document.getElementById("textoAux");
+        const textareaAux = document.getElementById("textoAux");
+        const textareaPergunta = document.getElementById("pergunta");
+
+        const isAux = textareaAux === document.activeElement;
+        const textarea = isAux ? textareaAux : textareaPergunta;
         const { value, selectionStart, selectionEnd } = textarea;
 
         const openTag = format === "bold" ? "<b>" : "<u>";
         const closeTag = format === "bold" ? "</b>" : "</u>";
-
         const selectedText = value.slice(selectionStart, selectionEnd);
-        const newText = `${value.slice(0, selectionStart)}${openTag}${selectedText}${closeTag}${value.slice(selectionEnd)}`;
 
-        this.setState((prevState) => ({
-            viewData: {
-                ...prevState.viewData,
-                textoAux: newText,
-            },
-        }), () => {
-            textarea.selectionStart = selectionEnd + openTag.length;
-            textarea.selectionEnd = selectionEnd + openTag.length;
-            textarea.focus();
-        });
+        if (selectedText) {
+            const newText = `${value.slice(0, selectionStart)}${openTag}${selectedText}${closeTag}${value.slice(selectionEnd)}`;
+
+            this.setState((prevState) => ({
+                viewData: {
+                    ...prevState.viewData,
+                    [isAux ? "textoAux" : "pergunta"]: newText, 
+                },
+            }), () => {
+                textarea.value = newText; 
+                textarea.selectionStart = selectionStart + openTag.length;
+                textarea.selectionEnd = selectionStart + openTag.length + selectedText.length + closeTag.length;
+                textarea.focus();
+            });
+        }
     }
-
 
     renderCorrectAnswerOptions = () => {
         return this.state.alternatives.map((alternative, index) => (
@@ -101,7 +106,7 @@ export class CreateQuestion extends React.Component {
 
     handleSubmit = async () => {
         const { viewData, alternatives, correctAnswer, explicacao } = this.state;
-    
+
         const questionData = {
             banca: viewData.banca,
             instituicao: viewData.instituicao,
@@ -115,7 +120,7 @@ export class CreateQuestion extends React.Component {
             correctAnswer: correctAnswer,
             explicacao: explicacao,
         };
-    
+
         try {
             const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/create', {
                 method: 'POST',
@@ -124,7 +129,7 @@ export class CreateQuestion extends React.Component {
                 },
                 body: JSON.stringify(questionData),
             });
-    
+
             const data = await response.json();
             if (response.ok) {
                 alert(data.message);
@@ -151,7 +156,6 @@ export class CreateQuestion extends React.Component {
             alert('Erro ao enviar questão');
         }
     };
-    
 
     render() {
         const { viewData, showTextAux, showImageAux, alternatives, correctAnswer, explicacao } = this.state;
@@ -219,7 +223,6 @@ export class CreateQuestion extends React.Component {
                                             />
                                         </div>
                                     )}
-
 
                                     {showImageAux && (
                                         <div id="image-aux-field" className="mb-3">
@@ -290,20 +293,21 @@ export class CreateQuestion extends React.Component {
 
                                 <div className="col-lg-6 col-md-6 col-12 mb-4 view">
                                     <div className="view-section card">
-                                        <div class="question-header">
+                                        <div className="question-header">
                                             <span className="ms-2">{`${viewData.disciplina} » ${viewData.assunto}`}</span>
                                             <div className="text-muted">
                                                 <small>
                                                     {`Nivel: ${viewData.nivel}  | Banca: ${viewData.banca} | Órgão: ${viewData.instituicao}`}
                                                 </small>
                                             </div>
-
                                         </div>
                                         <div className="question-content">
                                             <pre><div dangerouslySetInnerHTML={{ __html: viewData.textoAux }} /> </pre>
                                         </div>
 
-                                        <p>{viewData.pergunta}</p>
+                                        <div className="mb-3">
+    <div dangerouslySetInnerHTML={{ __html: viewData.pergunta }} />
+</div>
                                         <div id="view-alternatives">
                                             {alternatives.map((alternative) => (
                                                 <label key={alternative.label} className="d-flex align-items-center mb-3">
@@ -322,7 +326,7 @@ export class CreateQuestion extends React.Component {
                                                 </label>
                                             ))}
                                         </div>
-                                        <p><strong>Alternativa Correta:</strong> { correctAnswer || "Nenhuma selecionado"}</p>
+                                        <p><strong>Alternativa Correta:</strong> {correctAnswer || "Nenhuma selecionada"}</p>
                                         <div className="explicacao">
                                             <p><strong>Explicação:</strong> {explicacao}</p>
                                         </div>
