@@ -9,6 +9,7 @@ import { Simulate } from "../components/Create/Simulate/Simulate";
 import Simulado from "../components/views/Simulado";
 import { ConsultaSimulado } from "../components/Create/Simulate/ConsultaSimulado";
 import { ResultadoSimulado } from "../components/Create/Simulate/resultado/resultado";
+import Importa from "../components/import/Importa";
 
 export default function AppRouter() {
     return (
@@ -18,6 +19,7 @@ export default function AppRouter() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/questionCard" element={<QuestionCard />} />
+                <Route path="/importa" element={<Importa />} />
                 <Route path="/createQuestion" element={<CreateQuestion />} />
                 <Route path="/simulate" element={<Simulate />} />
                 <Route path="/simul" element={<ConsultaSimulado />} />

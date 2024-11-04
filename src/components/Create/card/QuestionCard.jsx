@@ -10,7 +10,9 @@ export class QuestionCard extends React.Component {
             questions: [],
             selectedAnswers: {},
             feedback: {},
-            expandedAuxiliaryText: {}, 
+            expandedAuxiliaryText: {},
+            currentPage: 1,
+            questionsPerPage: 20,
         };
     }
 
@@ -66,7 +68,35 @@ export class QuestionCard extends React.Component {
         }));
     };
 
+    // Pagination Methods
+    handleNextPage = () => {
+        this.setState((prevState) => ({
+            currentPage: prevState.currentPage + 1,
+        }));
+    };
+
+    handlePrevPage = () => {
+        this.setState((prevState) => ({
+            currentPage: Math.max(prevState.currentPage - 1, 1), // Prevent going below page 1
+        }));
+    };
+
+    setPage = (page) => {
+        this.setState({ currentPage: page });
+    };
+
     render() {
+        const { questions, currentPage, questionsPerPage } = this.state;
+
+        // Calculate the current questions to display
+        const indexOfLastQuestion = currentPage * questionsPerPage;
+        const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
+        const currentQuestions = questions.slice(indexOfFirstQuestion, indexOfLastQuestion);
+
+        // Calculate the total number of pages
+        const totalPages = Math.ceil(questions.length / questionsPerPage);
+        const pageNumbers = [...Array(totalPages).keys()].map(i => i + 1); // [1, 2, ..., totalPages]
+
         return (
             <>
                 <main className="cardQuestion">
@@ -74,7 +104,7 @@ export class QuestionCard extends React.Component {
                     <div className="containerCustom">
                         <Filter />
                         <div className="container">
-                            {this.state.questions.map((question) => (
+                            {currentQuestions.map((question) => (
                                 <div key={question.id} className="card mx-auto" style={{ maxWidth: '1200px' }}>
                                     {/* Header Section */}
                                     <div className="question-header">
@@ -115,11 +145,9 @@ export class QuestionCard extends React.Component {
                                         )}
                                     </div>
 
-                                    
-
                                     <div className="question-content mb-3">
-                                            <div dangerouslySetInnerHTML={{ __html: question.pergunta }} />
-                                        </div>
+                                        <div dangerouslySetInnerHTML={{ __html: question.pergunta }} />
+                                    </div>
 
                                     {/* Answer Options */}
                                     <div className="answer-options list-group mb-4">
@@ -131,7 +159,7 @@ export class QuestionCard extends React.Component {
                                                         type="radio"
                                                         name={`options-${question.id}`}
                                                         value={alt.label}
-                                                        onChange={() => this.handleAnswerSelect(question.id, alt.label)} 
+                                                        onChange={() => this.handleAnswerSelect(question.id, alt.label)}
                                                     />
                                                     <span className="q-option-item">{alt.label}</span>
                                                 </div>
@@ -159,6 +187,23 @@ export class QuestionCard extends React.Component {
                                     </div>
                                 </div>
                             ))}
+
+                            {/* Pagination Controls */}
+                            <nav aria-label="Page navigation example">
+                                <ul className="pagination justify-content-center">
+                                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                        <a className="page-link" onClick={this.handlePrevPage} href="#">Previous</a>
+                                    </li>
+                                    {pageNumbers.map(number => (
+                                        <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+                                            <a className="page-link" onClick={() => this.setPage(number)} href="#">{number}</a>
+                                        </li>
+                                    ))}
+                                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                        <a className="page-link" onClick={this.handleNextPage} href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </main>

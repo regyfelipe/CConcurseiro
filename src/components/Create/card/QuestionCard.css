@@ -95,3 +95,16 @@
 .btn-answer:focus {
     box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.3);
 }
+
+.pagination {
+    margin: 20px 0;
+}
+
+.pagination .page-item.disabled .page-link {
+    pointer-events: none;
+    opacity: 0.5;
+
+}
+
+
+
