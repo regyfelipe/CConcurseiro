@@ -21,8 +21,14 @@ export class CreateQuestion extends React.Component {
                 textoAux: "",
             },
             explicacao: "",
+            isTextExpanded: false,
         };
     }
+
+    toggleTextExpansion = () => {
+        this.setState(prevState => ({ isTextExpanded: !prevState.isTextExpanded }));
+    }
+
 
     toggleTextAux = () => {
         this.setState(prevState => ({ showTextAux: !prevState.showTextAux }));
@@ -108,17 +114,17 @@ export class CreateQuestion extends React.Component {
         const { viewData, alternatives, correctAnswer, explicacao } = this.state;
 
         const questionData = {
-            banca: viewData.banca || "",  
+            banca: viewData.banca || "",
             instituicao: viewData.instituicao || "",
             prova: viewData.prova || "",
             nivel: viewData.nivel || "",
-            disciplina: viewData.disciplina || "", 
-            assunto: viewData.assunto || "", 
-            pergunta: viewData.pergunta || "", 
-            textoAux: viewData.textoAux || "", 
-            alternativas: alternatives.map(alt => alt.value), 
-            correctAnswer: correctAnswer || "", 
-            explicacao: explicacao || "", 
+            disciplina: viewData.disciplina || "",
+            assunto: viewData.assunto || "",
+            pergunta: viewData.pergunta || "",
+            textoAux: viewData.textoAux || "",
+            alternativas: alternatives.map(alt => alt.value),
+            correctAnswer: correctAnswer || "",
+            explicacao: explicacao || "",
         };
 
         try {
@@ -190,7 +196,7 @@ export class CreateQuestion extends React.Component {
                                             className="btn btn-outline-secondary me-2"
                                             onClick={this.toggleTextAux}
                                         >
-                                            Texto auxiliar
+                                            {showTextAux ? '-' : '+'} Texto auxiliar
                                         </button>
                                         <button
                                             id="image-aux-btn"
@@ -302,8 +308,36 @@ export class CreateQuestion extends React.Component {
                                             </div>
                                         </div>
                                         <div className="question-content">
-                                            <pre><div dangerouslySetInnerHTML={{ __html: viewData.textoAux }} /> </pre>
-                                        </div>
+    <div className="d-flex align-items-center">
+    <span>Texto Auxiliar</span>
+        <button
+            className="btn btn-link"
+            onClick={this.toggleTextExpansion}
+            aria-expanded={this.state.isTextExpanded}
+            aria-controls="auxiliary-text"
+        >
+            {this.state.isTextExpanded ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-dash-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+                </svg>
+            ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                </svg>
+            )}
+        </button>
+       
+    </div>
+    {this.state.isTextExpanded && (
+        <pre id="auxiliary-text">
+            <div dangerouslySetInnerHTML={{ __html: viewData.textoAux }} />
+        </pre>
+    )}
+</div>
+
+
 
                                         <div className="mb-3">
                                             <div dangerouslySetInnerHTML={{ __html: viewData.pergunta }} />
