@@ -85,10 +85,10 @@ export class CreateQuestion extends React.Component {
             this.setState((prevState) => ({
                 viewData: {
                     ...prevState.viewData,
-                    [isAux ? "textoAux" : "pergunta"]: newText, 
+                    [isAux ? "textoAux" : "pergunta"]: newText,
                 },
             }), () => {
-                textarea.value = newText; 
+                textarea.value = newText;
                 textarea.selectionStart = selectionStart + openTag.length;
                 textarea.selectionEnd = selectionStart + openTag.length + selectedText.length + closeTag.length;
                 textarea.focus();
@@ -106,39 +106,21 @@ export class CreateQuestion extends React.Component {
 
     handleSubmit = async () => {
         const { viewData, alternatives, correctAnswer, explicacao } = this.state;
-    
-        // Campos obrigatórios que devem ser preenchidos
-        const requiredFields = [
-            viewData.disciplina,
-            viewData.assunto,
-            viewData.pergunta,
-            correctAnswer,
-            // Alternativas também podem ser consideradas obrigatórias se o usuário deve fornecer pelo menos uma
-            alternatives.some(alt => alt.value.trim() !== "")
-        ];
-    
-        // Verifica se todos os campos obrigatórios estão preenchidos
-        const allFieldsFilled = requiredFields.every(field => field !== "" && field !== undefined);
-    
-        if (!allFieldsFilled) {
-            alert("Por favor, preencha todos os campos obrigatórios.");
-            return; // Sai da função se os campos não estiverem preenchidos
-        }
-    
+
         const questionData = {
-            banca: viewData.banca || "",  // Pode enviar como vazio se não for preenchido
+            banca: viewData.banca || "",  
             instituicao: viewData.instituicao || "",
             prova: viewData.prova || "",
             nivel: viewData.nivel || "",
-            disciplina: viewData.disciplina,
-            assunto: viewData.assunto,
-            pergunta: viewData.pergunta,
-            textoAux: viewData.textoAux || "", // Envia como vazio se não for preenchido
-            alternativas: alternatives,
-            correctAnswer: correctAnswer,
-            explicacao: explicacao || "", // Envia como vazio se não for preenchido
+            disciplina: viewData.disciplina || "", 
+            assunto: viewData.assunto || "", 
+            pergunta: viewData.pergunta || "", 
+            textoAux: viewData.textoAux || "", 
+            alternativas: alternatives.map(alt => alt.value), 
+            correctAnswer: correctAnswer || "", 
+            explicacao: explicacao || "", 
         };
-    
+
         try {
             const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/create', {
                 method: 'POST',
@@ -147,11 +129,10 @@ export class CreateQuestion extends React.Component {
                 },
                 body: JSON.stringify(questionData),
             });
-    
+
             const data = await response.json();
             if (response.ok) {
                 alert(data.message);
-                // Limpar os campos após o envio
                 this.setState({
                     viewData: {
                         disciplina: "",
@@ -175,7 +156,6 @@ export class CreateQuestion extends React.Component {
             alert('Erro ao enviar questão');
         }
     };
-    
 
     render() {
         const { viewData, showTextAux, showImageAux, alternatives, correctAnswer, explicacao } = this.state;
@@ -326,8 +306,8 @@ export class CreateQuestion extends React.Component {
                                         </div>
 
                                         <div className="mb-3">
-    <div dangerouslySetInnerHTML={{ __html: viewData.pergunta }} />
-</div>
+                                            <div dangerouslySetInnerHTML={{ __html: viewData.pergunta }} />
+                                        </div>
                                         <div id="view-alternatives">
                                             {alternatives.map((alternative) => (
                                                 <label key={alternative.label} className="d-flex align-items-center mb-3">
