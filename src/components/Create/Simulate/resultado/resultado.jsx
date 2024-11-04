@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import './ResultadoSimulado.css';
 
 export function ResultadoSimulado() {
     const { id } = useParams();
@@ -30,7 +31,12 @@ export function ResultadoSimulado() {
     }, [id]);
 
     if (loading) {
-        return <div className="text-center"><div className="spinner-border" role="status"></div></div>;
+        return (
+            <div className="text-center mt-5">
+                <div className="spinner-border" role="status"></div>
+                <p>Carregando resultados...</p>
+            </div>
+        );
     }
 
     if (error) {
@@ -38,15 +44,28 @@ export function ResultadoSimulado() {
     }
 
     return (
-        <div>
-            <h2>Resultado</h2>
-            <ul>
-                {resultados.map((resultado, index) => (
-                    <li key={index}>
-                        {resultado.posicao}º {resultado.nome} - Total Acertos: {resultado.totalAcertos} - Total Erros: {resultado.totalErros}
-                    </li>
-                ))}
-            </ul>
+        <div className="container mt-4">
+            <h2 className="text-center mb-4">RESULTADOS</h2>
+            <table className="table table-bordered rounded shadow">
+                <thead className="table-dark text-center">
+                    <tr>
+                        <th>CLASS.</th>
+                        <th>NOME</th>
+                        <th>NOTA</th>
+                        <th>ERRADAS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {resultados.map((resultado, index) => (
+                        <tr key={index}>
+                            <td>{resultado.posicao}</td>
+                            <td>{resultado.nome}</td>
+                            <td className="nota">{resultado.totalAcertos}</td>
+                            <td className="erradas">{resultado.totalErros}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 }
