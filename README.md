@@ -13,14 +13,14 @@ O **Simulado** é uma aplicação web sem fins lucrativos que permite aos usuár
 - **API**: Node.js/Express (backend não incluído neste repositório)
 - **Estilização**: Bootstrap, CSS
 
+## Acesso ao Projeto
+Você pode acessar a aplicação online através do seguinte link: [Simulado Online](https://cconcurseiro.up.railway.app/)
+
 ## Imagem do Projeto
 ![Simulado](github/img/Macbook-Air-localhost-2xivodw9mq5dj1.gif)
-
 
 ## Contato
 - Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para entrar em contato:
 
 - **E-mail: regyfelip@gmail.com**
 - **Instagram: @fep.ink**
-
-
