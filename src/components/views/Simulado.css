@@ -1,0 +1,74 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-dialog {
+    background: white;
+    border-radius: 2em;
+    overflow: hidden;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); 
+    gap: 15px; 
+}
+
+.grid-item {
+    display: flex;
+    align-items: center;
+}
+
+.circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: black;
+    color: white;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-body {
+    padding: 20px; 
+}
+
+.containerSimulado {
+    padding: 10px 0;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.premium-input {
+    border: 1px solid #ddd; 
+    border-radius: 5px;
+    padding: 10px; 
+    transition: border-color 0.3s, box-shadow 0.3s; 
+}
+
+.premium-input:focus {
+    border-color: #5cb85c; 
+    box-shadow: 0 0 5px rgba(92, 184, 92, 0.5);
+    outline: none;
+}
+
+.confirmation-message {
+    display: flex;
+    background-color: #dff0d8; 
+    color: #3c763d;
+    border: 1px solid #d6e9c6; 
+    border-radius: 5px;
+    text-align: center; 
+}
