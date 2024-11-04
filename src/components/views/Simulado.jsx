@@ -87,17 +87,18 @@ const Simulado = () => {
     const handleFinalSubmit = async () => {
         if (name.trim() !== '') {
             setSubmitted(true);
-            const formattedResponses = questions.map(question => {
-                return {
-                    questionId: question.id,
-                    givenAnswer: feedback[question.id] || 'Nenhuma resposta selecionada', 
-                    correctAnswer: question.resposta_correta 
-                };
-            });
+            const formattedResponses = questions.map(question => ({
+                question_id: question.id,
+                resultado: {
+                    given_answer: feedback[question.id] || 'Nenhuma resposta selecionada',
+                    correct_answer: question.resposta_correta // Assumindo que você tem a resposta correta disponível
+                }
+            }));
     
             const submissionData = {
+                simuladoID: simulado.id, // Supondo que você tem o ID do simulado disponível
                 name,
-                responses: formattedResponses,
+                questao: formattedResponses,
             };
     
             try {
@@ -113,11 +114,11 @@ const Simulado = () => {
                     throw new Error('Erro ao enviar respostas.');
                 }
     
-                setNotification(`Simulado enviado com sucesso, ${name}!`);
-                setShowModal(false);
+                alert(`Simulado enviado com sucesso, ${name}!`);
+                handleCloseModal(); // Fechar o modal após sucesso
             } catch (error) {
                 console.error('Erro ao enviar respostas:', error);
-                setNotification('Erro ao enviar respostas.'); 
+                alert('Erro ao enviar respostas. Por favor, tente novamente.');
             }
         } else {
             alert('Por favor, insira seu nome.');
