@@ -65,8 +65,10 @@ const Simulado = () => {
     };
 
     const handleSubmitAnswer = () => {
-        setShowModal(true);
+        setIsNameInputVisible(true); 
+        setShowModal(true); 
     };
+    
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -78,6 +80,7 @@ const Simulado = () => {
     const handleConfirm = () => {
         setIsNameInputVisible(true);
     };
+    
 
     const handleFinalSubmit = async () => {
         if (name.trim() !== '') {
@@ -198,19 +201,20 @@ const Simulado = () => {
                                 </div>
 
                                 <div className="containerSimulado">
-                                    {isNameInputVisible && (
-                                        <div className="mb-4">
-                                            <label htmlFor="name" className="form-label">Digite seu nome:</label>
-                                            <input
-                                                type="text"
-                                                className="form-control premium-input"
-                                                id="name"
-                                                placeholder='Nome Completo'
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
-                                            />
-                                        </div>
-                                    )}
+                                {isNameInputVisible && (
+    <div className="mb-4">
+        <label htmlFor="name" className="form-label">Digite seu nome:</label>
+        <input
+            type="text"
+            className="form-control premium-input"
+            id="name"
+            placeholder='Nome Completo'
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+        />
+    </div>
+)}
+
                                     {submitted && (
                                         <div className="confirmation-message">
                                             <p>Simulado enviado com sucesso, <strong>{name}</strong>!</p>
