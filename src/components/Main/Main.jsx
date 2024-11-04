@@ -3,9 +3,7 @@ import { HeaderPage } from "../Header/Header";
 import heroImag from '../../assets/imgs/hero-img.png';
 import heroBg from '../../assets/imgs/hero-bg-2.jpg';
 import { Link } from 'react-router-dom';
-
-
-
+import './Main.css'
 
 export class MainContainer extends React.Component {
     render() {
@@ -16,7 +14,7 @@ export class MainContainer extends React.Component {
                     <img src={heroBg} alt="" className="hero-bg" />
                     <div className="container">
                         <div className="row gy-4 justify-content-between">
-                            <div className="col-lg-4 order-lg-last hero-img" data-aos="zoom-out" data-aos-delay={100}>
+                            <div className="col-lg-4 imagem-bg order-lg-last hero-img" data-aos="zoom-out" data-aos-delay={100}>
                                 <img src={heroImag} className="img-fluid animated" alt="" />
                             </div>
                             <div className="col-lg-6  d-flex flex-column justify-content-center" data-aos="fade-in">
