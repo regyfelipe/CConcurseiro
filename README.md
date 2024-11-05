@@ -14,7 +14,7 @@ O **Simulado** é uma aplicação web sem fins lucrativos que permite aos usuár
 - **Estilização**: Bootstrap, CSS
 
 ## Acesso ao Projeto
-Você pode acessar a aplicação online através do seguinte link: [Simulado Online](https://cconcurseiro.up.railway.app/)
+Você pode acessar a aplicação online através do seguinte link: [Simulado Online](https://c-concurseiro.vercel.app/)
 
 ## Imagem do Projeto
 ![Simulado](github/img/Macbook-Air-localhost-2xivodw9mq5dj1.gif)
