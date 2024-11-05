@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MultiSelect } from "react-multi-select-component";
+import axios from 'axios';
 import './Filter.css';
 
 export const Filter = () => {
@@ -11,14 +12,7 @@ export const Filter = () => {
         nivel: [],
         instituicao: [],
     });
-
-    const [options, setOptions] = useState({
-        disciplinaOptions: [],
-        assuntoOptions: [],
-        bancaOptions: [],
-        nivelOptions: [],
-        instituicaoOptions: [],
-    });
+    const [options, setOptions] = useState({});
 
     const toggleFilter = () => {
         setIsExpanded(!isExpanded);
@@ -31,28 +25,20 @@ export const Filter = () => {
         }));
     };
 
-    // Fetching options from the backend
-    useEffect(() => {
-        const fetchOptions = async () => {
-            try {
-                const response = await fetch('https://backendcconcurseiro-production.up.railway.app/api/all'); 
-                const data = await response.json();
-                
-                // Ensure we correctly map the fetched data
-                setOptions({
-                    disciplinaOptions: data.disciplina || [],
-                    assuntoOptions: data.assunto || [],
-                    bancaOptions: data.banca || [],
-                    nivelOptions: data.nivel || [],
-                    instituicaoOptions: data.instituicao || [],
-                });
-            } catch (error) {
-                console.error("Error fetching options:", error);
-            }
-        };
+    const fetchFilterOptions = async () => {
+        try {
+            const response = await axios.get('/api/options'); 
+            setOptions(response.data);
+        } catch (error) {
+            console.error('Erro ao buscar opções de filtro:', error);
+        }
+    };
 
-        fetchOptions();
-    }, []);
+    useEffect(() => {
+        if (isExpanded) {
+            fetchFilterOptions();
+        }
+    }, [isExpanded]);
 
     return (
         <div className="container filter-container">
@@ -73,7 +59,7 @@ export const Filter = () => {
                     <div className="row">
                         <div className="col-md-4 mb-3">
                             <MultiSelect
-                                options={options.disciplinaOptions}
+                                options={options.disciplina || []}
                                 value={filterValues.disciplina}
                                 onChange={(selected) => handleMultiSelectChange('disciplina', selected)}
                                 labelledBy="Disciplina"
@@ -84,7 +70,7 @@ export const Filter = () => {
                         </div>
                         <div className="col-md-4 mb-3">
                             <MultiSelect
-                                options={options.assuntoOptions}
+                                options={options.assunto || []}
                                 value={filterValues.assunto}
                                 onChange={(selected) => handleMultiSelectChange('assunto', selected)}
                                 labelledBy="Assunto"
@@ -95,7 +81,7 @@ export const Filter = () => {
                         </div>
                         <div className="col-md-4 mb-3">
                             <MultiSelect
-                                options={options.bancaOptions}
+                                options={options.banca || []}
                                 value={filterValues.banca}
                                 onChange={(selected) => handleMultiSelectChange('banca', selected)}
                                 labelledBy="Banca"
@@ -108,7 +94,7 @@ export const Filter = () => {
                     <div className="row">
                         <div className="col-md-4 mb-3">
                             <MultiSelect
-                                options={options.nivelOptions}
+                                options={options.nivel || []}
                                 value={filterValues.nivel}
                                 onChange={(selected) => handleMultiSelectChange('nivel', selected)}
                                 labelledBy="Nível"
@@ -119,7 +105,7 @@ export const Filter = () => {
                         </div>
                         <div className="col-md-4 mb-3">
                             <MultiSelect
-                                options={options.instituicaoOptions}
+                                options={options.instituicao || []}
                                 value={filterValues.instituicao}
                                 onChange={(selected) => handleMultiSelectChange('instituicao', selected)}
                                 labelledBy="Instituição"
