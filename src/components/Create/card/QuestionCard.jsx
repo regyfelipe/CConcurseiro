@@ -1,6 +1,7 @@
 import React from "react";
 import { Filter } from "../../Filter/Filter";
 import { HeaderPage } from "../../Header/Header";
+import { Modal, Button } from 'react-bootstrap';
 import './QuestionCard.css';
 
 export class QuestionCard extends React.Component {
@@ -13,6 +14,8 @@ export class QuestionCard extends React.Component {
             expandedAuxiliaryText: {},
             currentPage: 1,
             questionsPerPage: 20,
+            showModal: false,
+            selectedExplanation: "",
         };
     }
 
@@ -68,7 +71,6 @@ export class QuestionCard extends React.Component {
         }));
     };
 
-    // Pagination Methods
     handleNextPage = () => {
         this.setState((prevState) => ({
             currentPage: prevState.currentPage + 1,
@@ -77,7 +79,7 @@ export class QuestionCard extends React.Component {
 
     handlePrevPage = () => {
         this.setState((prevState) => ({
-            currentPage: Math.max(prevState.currentPage - 1, 1), // Prevent going below page 1
+            currentPage: Math.max(prevState.currentPage - 1, 1),
         }));
     };
 
@@ -85,17 +87,30 @@ export class QuestionCard extends React.Component {
         this.setState({ currentPage: page });
     };
 
-    render() {
-        const { questions, currentPage, questionsPerPage } = this.state;
+    showExplanation = (explanation) => {
+        this.setState({ showModal: true, selectedExplanation: explanation });
+    };
 
-        // Calculate the current questions to display
+    handleClose = () => {
+        this.setState({ showModal: false, selectedExplanation: "" });
+    };
+
+    render() {
+        const { questions, currentPage, questionsPerPage, showModal, selectedExplanation } = this.state;
+
         const indexOfLastQuestion = currentPage * questionsPerPage;
         const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
         const currentQuestions = questions.slice(indexOfFirstQuestion, indexOfLastQuestion);
 
-        // Calculate the total number of pages
         const totalPages = Math.ceil(questions.length / questionsPerPage);
-        const pageNumbers = [...Array(totalPages).keys()].map(i => i + 1); // [1, 2, ..., totalPages]
+        const maxPageButtons = 5;
+        const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+        const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+        const pageNumbers = Array.from(
+            { length: endPage - startPage + 1 },
+            (_, i) => startPage + i
+        );
 
         return (
             <>
@@ -106,7 +121,6 @@ export class QuestionCard extends React.Component {
                         <div className="container">
                             {currentQuestions.map((question) => (
                                 <div key={question.id} className="card mx-auto" style={{ maxWidth: '1200px' }}>
-                                    {/* Header Section */}
                                     <div className="question-header">
                                         <span className="badge">{`Q${question.id}`}</span>
                                         <span className="ms-2">{`${question.disciplina} » ${question.assunto}`}</span>
@@ -115,7 +129,6 @@ export class QuestionCard extends React.Component {
                                         </div>
                                     </div>
 
-                                    {/* Auxiliary Text Toggle */}
                                     <div className="question-content">
                                         <div className="d-flex align-items-center">
                                             <span>Texto Auxiliar</span>
@@ -176,14 +189,24 @@ export class QuestionCard extends React.Component {
                                     )}
 
                                     {/* Button */}
-                                    <div className="text-end">
-                                        <button
-                                            type="button"
-                                            className="btn btn-answer"
-                                            onClick={() => this.handleSubmitAnswer(question)}
-                                        >
-                                            Responder
-                                        </button>
+                                    <div className="btns">
+                                        <div className="text-end">
+                                            <button
+                                                type="button"
+                                                className="btn btnCustom btn-answer"
+                                                onClick={() => this.handleSubmitAnswer(question)}
+                                            >
+                                                Responder
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                className="btn btnCustom btn-info"
+                                                onClick={() => this.showExplanation(question.explicacao)}
+                                            >
+                                                Explicação
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -207,6 +230,19 @@ export class QuestionCard extends React.Component {
                         </div>
                     </div>
                 </main>
+
+                {/* Modal for Explanation */}
+                <Modal show={showModal} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Explicação</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>{selectedExplanation}</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.handleClose}>
+                            Fechar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </>
         );
     }

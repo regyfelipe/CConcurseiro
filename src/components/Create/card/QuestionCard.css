@@ -88,6 +88,7 @@
 }
 
 .btn-answer:hover {
+    color: white;
     background-color: #4c51bf;
     transform: translateY(-2px);
 }
@@ -106,5 +107,28 @@
 
 }
 
+.btnCustom {
+    margin:0 .5em;
+}
+
+.btn-info {
+    border: none;
+    color: #ffffff;
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+    border-radius: 25px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+
+.btn-info:hover {
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btns {
+    display: flex;
+    justify-content: center;
+}
 
 

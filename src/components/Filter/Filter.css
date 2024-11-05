@@ -31,7 +31,7 @@
 
 .filter-buttons button {
     font-weight: 600;
-    padding: 1px 20px;
+    padding: 1px 30px;
     border-radius: 10px;
 }
 
@@ -42,6 +42,7 @@
 
 .btn-clear:hover {
     background-color: #138496;
+    color: white;
 }
 
 .btn-filter {
@@ -51,6 +52,7 @@
 
 .btn-filter:hover {
     background-color: #218838;
+    color: white;
 }
 
 .filter-section {

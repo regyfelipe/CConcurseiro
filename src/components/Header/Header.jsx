@@ -111,7 +111,7 @@ export const HeaderPage = () => {
                                 <li><Link to="/simul">Consulta simulados</Link></li>
                                 <li><Link to="/createQuestion">Criar Questao</Link></li>
                                 <li><Link to="/questionCard">Questoes</Link></li>
-                                {/* <li><Link to="/importa">Importa</Link></li> */}
+                                <li><Link to="/importa">Importa</Link></li>
                                 <li><Link to="/login">entra</Link></li>
 
                             </ul>
